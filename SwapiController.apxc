@@ -7,17 +7,25 @@ public with sharing class SwapiController {
                 FROM Expense__c];
     } */
     @AuraEnabled
-    public static Contact saveExpense(Contact contact) {
+    
+    //FUNCIONA, AGREGA CUENTA, TENGO QUE HACER QUE AGREGUE CONTACTO Y QUE TOME LOS 
+    //DATOS DESDE EL INPUT FIELD
+    public static Contact saveContact(Contact contact) {
+        Account acct = new Account(Name='Acme', Phone='(415)555-1212', NumberOfEmployees=100);
+// Insert the account by using DML
+		insert acct;
         // Perform isUpdateable() checking first, then
-        upsert contact;
+        upsert acct;
         return contact;
     } 
+    
+
+    //Esto trae la lista de contactos desde la base de datos
     @AuraEnabled
-    public static List<Contact> getCharacters() {
+    public static List<Contact> getContacts() {
         // Check to make sure all fields are accessible to this user
         String[] fieldsToCheck = new String[] {
-            'Name', 'Height__c', 'Gender__c', 'Haircolor__c',
-                'Eyecolor__c', 'URL__c', 'Planet__c', 'Characternumber__c'
+            'Name', 'Height__c'
                 };
                     Map<String,Schema.SObjectField> fieldDescribeTokens =
                     Schema.SObjectType.Contact.fields.getMap();
@@ -27,8 +35,7 @@ public with sharing class SwapiController {
             }
         }
         // OK, they're cool, let 'em through
-        return [SELECT Name, Height__c, Gender__c, Haircolor__c,
-                Eyecolor__c, URL__c, Planet__c, Characternumber__c
+        return [SELECT Name, Height__c
                 FROM Contact];
     }
 }
