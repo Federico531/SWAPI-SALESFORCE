@@ -2,6 +2,7 @@
     // Load expenses from Salesforce
     doInit: function(component, event, helper) {
         // Create the action
+        // c.getAccounts va directo a SwapiController.apxc
         let action = component.get("c.getContacts");
         // Add callback behavior for when response is received
         action.setCallback(this, function(response) {
