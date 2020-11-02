@@ -1,34 +1,85 @@
 <aura:component >
     <!--Expense Form contiene todos los input fields y el boton submit que lo envia a expenses -->
     
-    
-    
     <aura:attribute name="newContact" type="Contact"
                     default="{ 'sobjectType': 'Contact',
                              'Name': '',
-                             'Height__c': ''
+                             'Height__c': '',
+                             'Gender__c': '',
+                             'Haircolor__c': '',
+                             'Eyecolor__c': '',
+                             'URL__c': '',
+                             'Planet__c': '',
+                             'Characternumber__c':''
                              }"/>
     <aura:registerEvent name="createContact" type="c:swapiItemUpdate"/>
     <!-- CREATE NEW EXPENSE -->
-    <div aria-labelledby="newswapiform">
+    <div aria-labelledby="newcontactform">
         <!-- BOXED AREA -->
         <fieldset class="slds-box slds-theme_default slds-container_small">
             <legend id="newswapiform" class="slds-text-heading_small
                                              slds-p-vertical_medium">
-                Add Expense
+                Añadir Personaje
             </legend>
             <!-- CREATE NEW EXPENSE FORM -->
             <form class="slds-form_stacked">
-                <lightning:input aura:id="contactform" label="Contact Name"
+                <!-- Nombre name="expensename" -->
+                <lightning:input aura:id="contactform" label="Nombre"
                                  name="contactname"
                                  value="{!v.newContact.Name}"
                                  required="true"
-                                 messageWhenValueMissing="SE TE OLVIDO ALGO?"/>
-                <lightning:input aura:id="contactform" label="Contact Height"
-                                 name="contactheight"
+                                 messageWhenValueMissing="Ingrese el nombre del personaje"/>
+                
+                <!-- ALTURA name="expenseamount" -->
+                
+                <lightning:input aura:id="contactform" label="Altura"
+                                 name="contactname"
                                  value="{!v.newContact.Height__c}"
                                  required="true"
-                                 messageWhenValueMissing="SE TE OLVIDO ALGO?"/>
+                                 messageWhenValueMissing="Ingrese la altura del personaje"/>
+                
+                <!-- GENERO name="expensename"-->
+                <lightning:input aura:id="contactform" label="Género"
+                                 name="contactgender"
+                                 value="{!v.newContact.Gender__c}"
+                                 required="true"
+                                 messageWhenValueMissing="Ingrese el género del personaje"/>
+                
+                <!-- COLOR DE CABELLO name="expensename"-->                
+                <lightning:input aura:id="characterform" label="Color de Cabello"
+                                 name="characterhaircolor"
+                                 value="{!v.newContact.Haircolor__c}"
+                                 required="true"
+                                 messageWhenValueMissing="Ingrese el color de cabello del personaje"/>
+                <!-- COLOR DE OJOS name="expensename"-->                
+                <lightning:input aura:id="characterform" label="Color de Ojos"
+                                 name="charactereyecolor"
+                                 value="{!v.newContact.Eyecolor__c}"
+                                 required="true"
+                                 messageWhenValueMissing="Ingrese el color de ojos del personaje"/>
+                <!-- URL name="expensename"-->               
+                <lightning:input aura:id="characterform" label="URL"
+                                 name="characterurl"
+                                 value="{!v.newContact.URL__c}"
+                                 required="true"
+                                 messageWhenValueMissing="Ingrese la URL del personaje"/>
+                <!-- PLANETA name="expensename"-->                
+                <lightning:input aura:id="characterform" label="Planeta"
+                                 name="characterplanet"
+                                 value="{!v.newContact.Planet__c}"
+                                 required="true"
+                                 messageWhenValueMissing="Ingrese el planeta del personaje"/>
+                <!-- NUMERO DE PERSONAJE name="expensename"-->          
+                <lightning:input aura:id="characterform" label="Número de Personaje"
+                                 name="characternumber"
+                                 value="{!v.newContact.Characternumber__c}"
+                                 required="true"
+                                 messageWhenValueMissing="Ingrese el número de personaje"/>
+
+                <lightning:button label="Crear contacto"
+                                  class="slds-m-top_medium"
+                                  variant="brand"
+                                  onclick="{!c.clickCreate}"/>
                 
                 <lightning:button label="Create Contact"
                                   class="slds-m-top_medium"
