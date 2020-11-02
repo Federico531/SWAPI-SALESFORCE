@@ -1,7 +1,7 @@
 ({
-    createExpense: function(component, newExpense) {
-        let createEvent = component.getEvent("createExpense");
-        createEvent.setParams({ "expense": newExpense });
+    createContact: function(component, newContact) {
+        let createEvent = component.getEvent("createContact");
+        createEvent.setParams({ "contact": newContact});
         createEvent.fire();
     },
 })
