@@ -1,6 +1,0 @@
-// Insert the Josh contact
-Contact contacti = new Contact(Height__c= 175,Eyecolor__c='Marrón',URL__c='www.culiau.com', Haircolor__c='black',
-                    Gender__c='Male', Characternumber__c= 140,
-                    FirstName='RUBIO',LastName='CUCULI',Department='TORCACERO');       
-insert contacti;
-
