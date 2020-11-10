@@ -1,35 +1,48 @@
 ({
- clickCreate: function(component, event, helper) {
-
-        //component.find('aura:id')
-        let validContact = component.find('contactform').reduce(function (validSoFar, inputCmp) {
-            // Displays error messages for invalid fields
-            inputCmp.showHelpMessageIfInvalid();
-            return validSoFar && inputCmp.get('v.validity').valid;
-        }, true);
-        // If we pass error checking, do some real work
-       
-     	if(validContact){
-            // Crear nuevo contacto
-            let newContact = component.get("v.newContact");
-            console.log("Create Character: " + JSON.stringify(newContact));
-            helper.createContact(component, newContact);
-        }
+    // Load expenses from Salesforce
+    doInit: function(component, event, helper) {
+        // Create the action
+        // c.getAccounts va directo a SwapiController.apxc
+        let action = component.get("c.getContacts");
+        // Add callback behavior for when response is received
+        action.setCallback(this, function(response) {
+            let state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.contacts", response.getReturnValue());
+                
+            }
+            else {
+                console.log("Failed with state: " + state);
+            }
+        });
+        // Send action off to be executed
+        $A.enqueueAction(action);
+    },
+    
+    handleUpdateContact: function(component, event, helper) {
+        let updatedExp = event.getParam("contact");
+        helper.updateContact(component, updatedExp);
+    },
+    handleCreateContact: function(component, event, helper) {
+        let newContact = event.getParam("contact");
+        helper.createContact(component, newContact);
+        alert("Contacto guardado")
     },
     buscar : function(component, event, helper) {      
         
+        // Verifico si obtengo bien el valor desde el campo		       
+        var valorABuscar = component.find('expenseformID').get('v.value'); //Obtengo el valor (ID) a buscar en la API
         
-        // Obtengo el valor (ID) a buscar en la API      
-        var valorABuscar = component.find('expenseformID').get('v.value'); 
+        //**** PRUEBA 
         
-        //validacion para que traiga solo personajes que existan desde la API
+        //**** FIN PRUEBA
         
-        // Valida el ID ingresado
-        if(valorABuscar >= 1 && valorABuscar <89){       
+        //validacion para que trainga solo personajes que existan desde la API
+        if(valorABuscar >= 1 && valorABuscar <89){ // INICIO DEL IF GENERAL DE VALIDACION DE ID        
         
         var dato = 'people';
 
-        // Hago la llamada al metodo del controlador APEX (SwapiController)
+        // Hago la llamada al metodo del controlador APEX (ContactController)
         var action = component.get("c.llamarALaApi");
         
         action.setParams({
@@ -37,14 +50,13 @@
             "dato": dato
         });
                 
-        // Esto genera una respuesta asíncrona mientras espera la respuesta de la API
+        // Agregar comportamiento de la callback para cuando se recibe la respuesta
         action.setCallback(this, function(response) {
             
         var state = response.getState();
             
         if (state === "SUCCESS") {
-           
-            // Habilito el boton guardar luego de recibir los datos de la API
+            // Habilito el boton guardar, ya que se hizo la llamada a la API
             let button = component.find('saveButton');
             button.set('v.disabled', false);                  
            
@@ -55,9 +67,9 @@
             console.log("Falló con el estado: " + state);
         }                    
         });
-        // Enviar acción para ejecutarse
+        // Enviar acción para ejecutar
         $A.enqueueAction(action);
         
-        } 
+        } // FIN DEL IF GENERAL DE VALIDACION DE ID VALIDO
 	}
 })
