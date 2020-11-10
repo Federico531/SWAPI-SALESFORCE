@@ -1,31 +1,63 @@
 ({
-    // Load expenses from Salesforce
-    doInit: function(component, event, helper) {
-        // Create the action
-        // c.getAccounts va directo a SwapiController.apxc
-        let action = component.get("c.getContacts");
-        // Add callback behavior for when response is received
-        action.setCallback(this, function(response) {
-            let state = response.getState();
-            if (state === "SUCCESS") {
-                component.set("v.contacts", response.getReturnValue());
-                
-            }
-            else {
-                console.log("Failed with state: " + state);
-            }
+ clickCreate: function(component, event, helper) {
+
+        //component.find('aura:id')
+        let validContact = component.find('contactform').reduce(function (validSoFar, inputCmp) {
+            // Displays error messages for invalid fields
+            inputCmp.showHelpMessageIfInvalid();
+            return validSoFar && inputCmp.get('v.validity').valid;
+        }, true);
+        // If we pass error checking, do some real work
+       
+     	if(validContact){
+            // Crear nuevo contacto
+            let newContact = component.get("v.newContact");
+            console.log("Create Character: " + JSON.stringify(newContact));
+            helper.createContact(component, newContact);
+        }
+    },
+    buscar : function(component, event, helper) {      
+        
+        
+        // Obtengo el valor (ID) a buscar en la API      
+        var valorABuscar = component.find('expenseformID').get('v.value'); 
+        
+        //validacion para que traiga solo personajes que existan desde la API
+        
+        // Valida el ID ingresado
+        if(valorABuscar >= 1 && valorABuscar <89){       
+        
+        var dato = 'people';
+
+        // Hago la llamada al metodo del controlador APEX (SwapiController)
+        var action = component.get("c.llamarALaApi");
+        
+        action.setParams({
+            "valorABuscar": valorABuscar,
+            "dato": dato
         });
-        // Send action off to be executed
+                
+        // Esto genera una respuesta asíncrona mientras espera la respuesta de la API
+        action.setCallback(this, function(response) {
+            
+        var state = response.getState();
+            
+        if (state === "SUCCESS") {
+           
+            // Habilito el boton guardar luego de recibir los datos de la API
+            let button = component.find('saveButton');
+            button.set('v.disabled', false);                  
+           
+            var respuesta = response.getReturnValue();
+            helper.insertData(component, valorABuscar, respuesta);
+        }
+        else {
+            console.log("Falló con el estado: " + state);
+        }                    
+        });
+        // Enviar acción para ejecutarse
         $A.enqueueAction(action);
-    },
-    
-    handleUpdateContact: function(component, event, helper) {
-        let updatedExp = event.getParam("contact");
-        helper.updateContact(component, updatedExp);
-    },
-    handleCreateContact: function(component, event, helper) {
-        let newContact = event.getParam("contact");
-        helper.createContact(component, newContact);
-        alert("Contacto guardado")
-    },
+        
+        } 
+	}
 })
