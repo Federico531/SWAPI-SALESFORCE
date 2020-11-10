@@ -1,4 +1,4 @@
-<aura:component >
+<aura:component controller="SwapiController">
     <!--Expense Form contiene todos los input fields y el boton submit que lo envia a expenses -->
     
     <aura:attribute name="newContact" type="Contact"
@@ -9,7 +9,7 @@
                              'Haircolor__c': '',
                              'Eyecolor__c': '',
                              'URL__c': '',
-                             'Planet__c': '',
+                             'Homeworld__c': '',
                              'Characternumber__c':''
                              }"/>
     <aura:registerEvent name="createContact" type="c:swapiItemUpdate"/>
@@ -17,12 +17,34 @@
     <div aria-labelledby="newcontactform">
         <!-- BOXED AREA -->
         <fieldset class="slds-box slds-theme_default slds-container_small">
-            <legend id="newswapiform" class="slds-text-heading_small
-                                             slds-p-vertical_medium">
-                Añadir Personaje
-            </legend>
+
             <!-- CREATE NEW EXPENSE FORM -->
-            <form class="slds-form_stacked">
+            
+            <legend id="newcontactform" class="slds-text-heading--small slds-p-vertical--medium">
+                Buscar un personaje
+            </legend>
+            
+            <!-- FORM DE CONTACTO -->
+            <form class="slds-form--stacked">            
+                
+                <lightning:input tyype="number" aura:id="expenseformID" label="ID personaje"
+                                 name="expenseamount"                             
+                                 required="true"
+                                 value=""/>
+                <lightning:button label="Buscar"
+                                  class="slds-m-top--medium"
+                                  variant="brand"
+                                  onclick="{!c.buscar}"/>
+                
+                <lightning:button label="Crear contacto"
+                                  aura:id="saveButton"
+                                  class="slds-m-top_medium"
+                                  variant="brand"
+                                  onclick="{!c.clickCreate}"/>
+                            <legend id="newswapiform" class="slds-text-heading_small
+                                             slds-p-vertical_medium">
+                Datos del Personaje
+            </legend>
                 <!-- Nombre name="expensename" -->
                 <lightning:input aura:id="contactform" label="Nombre"
                                  name="contactname"
@@ -31,6 +53,7 @@
                                  messageWhenValueMissing="Ingrese el nombre del personaje"/>
                 
                 <!-- ALTURA name="expenseamount" -->
+                
                 
                 <lightning:input aura:id="contactform" label="Altura"
                                  name="contactname"
@@ -46,45 +69,38 @@
                                  messageWhenValueMissing="Ingrese el género del personaje"/>
                 
                 <!-- COLOR DE CABELLO name="expensename"-->                
-                <lightning:input aura:id="characterform" label="Color de Cabello"
+                <lightning:input aura:id="contactform" label="Color de Cabello"
                                  name="characterhaircolor"
                                  value="{!v.newContact.Haircolor__c}"
                                  required="true"
                                  messageWhenValueMissing="Ingrese el color de cabello del personaje"/>
                 <!-- COLOR DE OJOS name="expensename"-->                
-                <lightning:input aura:id="characterform" label="Color de Ojos"
+                <lightning:input aura:id="contactform" label="Color de Ojos"
                                  name="charactereyecolor"
                                  value="{!v.newContact.Eyecolor__c}"
                                  required="true"
                                  messageWhenValueMissing="Ingrese el color de ojos del personaje"/>
                 <!-- URL name="expensename"-->               
-                <lightning:input aura:id="characterform" label="URL"
+                <lightning:input aura:id="contactform" label="URL"
                                  name="characterurl"
                                  value="{!v.newContact.URL__c}"
                                  required="true"
                                  messageWhenValueMissing="Ingrese la URL del personaje"/>
                 <!-- PLANETA name="expensename"-->                
-                <lightning:input aura:id="characterform" label="Planeta"
+                <lightning:input aura:id="contactform" label="Planeta"
                                  name="characterplanet"
-                                 value="{!v.newContact.Planet__c}"
+                                 value="{!v.newContact.Homeworld__c}"
                                  required="true"
                                  messageWhenValueMissing="Ingrese el planeta del personaje"/>
                 <!-- NUMERO DE PERSONAJE name="expensename"-->          
-                <lightning:input aura:id="characterform" label="Número de Personaje"
+                <lightning:input aura:id="contactform" label="Número de Personaje"
                                  name="characternumber"
                                  value="{!v.newContact.Characternumber__c}"
                                  required="true"
                                  messageWhenValueMissing="Ingrese el número de personaje"/>
-
-                <lightning:button label="Crear contacto"
-                                  class="slds-m-top_medium"
-                                  variant="brand"
-                                  onclick="{!c.clickCreate}"/>
                 
-                <lightning:button label="Create Contact"
-                                  class="slds-m-top_medium"
-                                  variant="brand"
-                                  onclick="{!c.clickCreate}"/>
+                
+                
             </form>
             <!-- / CREATE NEW EXPENSE FORM -->
         </fieldset>
